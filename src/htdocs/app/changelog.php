@@ -2,6 +2,19 @@
 session_start();
 include('cred.php');
 ?>
+<?php
+$perms = 'Admin';
+    try {
+    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $sql = "SELECT * FROM accounts_owned WHERE project_id=" . $_GET['id']. " AND login='".$_SESSION['id']."' ORDER by id DESC";
+    $users = $dbh->query($sql);
+    foreach($users as $row) {
+        $perms = $row['permissions'];
+    }
+    $dbh = null;
+    }
+    catch(PDOexception $e) { echo "Error is: " . $e->etmessage(); }
+?>
 <div id="changeLog">
     <div class="container">
         <div class="changelog">
@@ -13,7 +26,7 @@ include('cred.php');
             $row_count = $users->rowCount();
             if($row_count !== 0) {
             foreach ($users as $row){
-                echo '<div onclick="change(this, '.$row['id'].', '.$_GET['project'].')" id="change'.$row['id'].'" class="time'.($row['milestone'] == 'true' ? ' milestone' : '').'"><h6><b>'.htmlspecialchars($row['name']).'</b></h6><p>'.htmlspecialchars($row['description']).'</p></div>';
+                echo '<div '. ($perms !== "View Only" ? ' onclick="change(this, '.$row['id'].', '.$_GET['project'].')"': ""). ' id="change'.$row['id'].'" class="time'.($row['milestone'] == 'true' ? ' milestone' : '').'"><h6><b>'.htmlspecialchars($row['name']).'</b></h6><p>'.htmlspecialchars($row['description']).'</p></div>';
                 }
                 }
                 else {
@@ -26,7 +39,8 @@ include('cred.php');
         </div>
     </div>
 </div>
-
+<?php if($perms !== "View Only") {
+    ?>
 
 <a class="btn-floating btn-large blue-grey darken-3" style="position:fixed;bottom:20px;right:20px;z-index:2" onclick="document.getElementById('changelog_popup').style.display = 'block';document.getElementById('changelog__popup').style.display = 'block';document.getElementById('changelog_name').focus()">
     <i class="large material-icons">add</i>
@@ -103,3 +117,4 @@ window.onkeyup = function(e) {
     }
 }
 </script>
+<?php } ?>

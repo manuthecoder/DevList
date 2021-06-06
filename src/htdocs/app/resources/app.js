@@ -4,6 +4,13 @@ window.onerror = function(msg, url, linenumber) {
   // });
   return true;
 };
+function nl2br (str, is_xhtml) {
+    if (typeof str === 'undefined' || str === null) {
+        return '';
+    }
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+}
 var __theme = localStorage.getItem('theme');
 
 function switchTheme() {
@@ -33,7 +40,7 @@ function todo(id, el) {
   var __priority = el.getElementsByTagName("p")[0].innerHTML;
   var __desc = el.getElementsByTagName("h6")[0].innerHTML;
   document.getElementById('todo_title').innerHTML = __name;
-  document.getElementById('todo_desc').innerHTML = __desc;
+  document.getElementById('todo_desc').innerHTML = nl2br(__desc);
   document.getElementById('todo_priority').innerHTML = __priority;
 }
 $('#slide-out').sidenav();

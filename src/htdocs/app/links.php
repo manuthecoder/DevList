@@ -2,6 +2,19 @@
 session_start();
 include('cred.php');
 ?>
+<?php
+$perms = 'Admin';
+    try {
+    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $sql = "SELECT * FROM accounts_owned WHERE project_id=" . $_GET['id']. " AND login='".$_SESSION['id']."' ORDER by id DESC";
+    $users = $dbh->query($sql);
+    foreach($users as $row) {
+        $perms = $row['permissions'];
+    }
+    $dbh = null;
+    }
+    catch(PDOexception $e) { echo "Error is: " . $e->etmessage(); }
+?>
 <div class="container" id="linkLoader">
 <?php
     try {
@@ -15,9 +28,11 @@ include('cred.php');
         <div class="card">
             '.($row['img'] == 'true' ? '<img src="'.$row['content'].'" width="100%" class="materialboxed"><div class="card-content"><br><span class="center card-title"><a target="_blank" href="'.$row['content'].'">'.$row['content'].'</a></span>' : '<div class="card-content"><a target="_blank" href="'.$row['content'].'"><span class="card-title">'.$row['content'].'</span></a>').'
             </div>
+            '. ($perms !== "View Only" ? '
             <div class="card-action">
             <a href="#" onclick="this.parentElement.parentElement.style.display=\'none\';$(\'#__AJAX_LOADER\').load(\'delete-link.php?id='.$row['id'].'\');"><i class="material-icons">delete</i></a>
             </div>
+            ': ""). '
         </div>';
     }
     }
@@ -29,6 +44,8 @@ include('cred.php');
     catch(PDOexception $e) { echo "Error is: " . $e->etmessage(); }
 ?> 
 </div>
+<?php if($perms !== "View Only") {
+    ?>
 <a class="btn-floating btn-large blue-grey darken-3" style="position:fixed;bottom:20px;right:20px;z-index:2" onclick="document.getElementById('link_popup').style.display = 'block';document.getElementById('__linkPopup').style.display = 'block';document.getElementById('__linkPopupFormName').focus();document.getElementById('__linkPopupFormBanner').style.display = 'none'; document.getElementById('err__linkPopupFormBanner').style.display = 'none';">
     <i class="large material-icons">add</i>
 </a>
@@ -92,3 +109,4 @@ window.onkeyup = function(e) {
     }
 }
 </script>
+<?php } ?>

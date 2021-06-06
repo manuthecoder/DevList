@@ -1,6 +1,17 @@
 <?php
 session_start();
 include('cred.php');
+$perms = 'Admin';
+    try {
+    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $sql = "SELECT * FROM accounts_owned WHERE project_id=" . $_GET['id']. " AND login='".$_SESSION['id']."' ORDER by id DESC";
+    $users = $dbh->query($sql);
+    foreach($users as $row) {
+        $perms = $row['permissions'];
+    }
+    $dbh = null;
+    }
+    catch(PDOexception $e) { echo "Error is: " . $e->etmessage(); }
 ?>
 <div class='row' style="padding:0 30px" id="bugLoader">
     <div class="col s12 m6">
@@ -19,10 +30,10 @@ include('cred.php');
                 <h5 style="margin:0;">'.$row['name'].'</h5>
                 <p>Error: '.$row['error'].'</p>
             </div>
-             <div class="card-action">
+             '. ($perms !== "View Only" ? '<div class="card-action">
                 <a href="#!" onclick="this.style.display=\'none\'; $(\'#__AJAX_LOADER\').load(\'resolve-bug.php?id='.$row['id'].'\');document.getElementById(\'res_task\').appendChild(this.parentElement.parentElement)"><i class="material-icons">check</i></a>
                 <a href="#!" onclick="$(\'#__AJAX_LOADER\').load(\'delete-bug.php?id='.$row['id'].'\');this.parentElement.parentElement.style.display=\'none\'"><i class="material-icons">delete</i></a>
-            </div>
+            </div>': ""). '
         </div>';
     }
     }
@@ -50,9 +61,9 @@ include('cred.php');
                 <h5 style="margin:0;">'.$row['name'].'</h5>
                 <p>Error: '.$row['error'].'</p>
             </div>
-             <div class="card-action">
+             '. ($perms !== "View Only" ? ' <div class="card-action">
                 <a href="#!" onclick="$(\'#__AJAX_LOADER\').load(\'delete-bug.php?id='.$row['id'].'\');this.parentElement.parentElement.style.display=\'none\'"><i class="material-icons">delete</i></a>
-            </div>
+            </div>': ""). '
         </div>';
     }
     }
@@ -67,6 +78,8 @@ include('cred.php');
 </div>
 
 <!-- href="./add/task/?id=<?php echo $_GET['id']; ?>""   -->
+<?php if($perms !== "View Only") {
+    ?>
 <a class="btn-floating btn-large blue-grey darken-3" style="position:fixed;bottom:20px;right:20px;z-index:2" onclick="document.getElementById('bug_popup').style.display = 'block';document.getElementById('bug__popup').style.display = 'block';document.getElementById('bug_name').focus()">
     <i class="large material-icons">add</i>
 </a>
@@ -128,3 +141,4 @@ window.onkeyup = function(e) {
     }
 }
 </script>
+<?php } ?>

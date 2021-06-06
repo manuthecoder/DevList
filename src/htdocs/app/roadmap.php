@@ -7,6 +7,19 @@ try {
 }
 catch(PDOexception $e) { echo "Error is: " . $e->etmessage(); }
 ?>
+<?php
+$perms = 'Admin';
+    try {
+    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $sql = "SELECT * FROM accounts_owned WHERE project_id=" . $_GET['id']. " AND login='".$_SESSION['id']."' ORDER by id DESC";
+    $users = $dbh->query($sql);
+    foreach($users as $row) {
+        $perms = $row['permissions'];
+    }
+    $dbh = null;
+    }
+    catch(PDOexception $e) { echo "Error is: " . $e->etmessage(); }
+?>
 <div class="container" id="changeLog">
 <h4>Roadmap</h4><br>
   <script type="text/javascript">
@@ -59,7 +72,7 @@ catch(PDOexception $e) { echo "Error is: " . $e->etmessage(); }
                 var d1 = data.getValue(selection[0].row, 3);
                 var d2 = data.getValue(selection[0].row, 4);
                 var percent = data.getValue(selection[0].row, 6);
-                roadmap(id, name, percent, d1, d2, <?php echo $_GET['id'];?>);
+                <?php if($perms !== "View Only") { ?> roadmap(id, name, percent, d1, d2, <?php echo $_GET['id'];?>);<?php } ?>
             }
         });
       chart.draw(data, options);
@@ -67,6 +80,7 @@ catch(PDOexception $e) { echo "Error is: " . $e->etmessage(); }
   </script>
   <div id="chart_div"></div>
 </div>
+<?php if($perms !== "View Only") { ?>
 <a class="btn-floating btn-large blue-grey darken-3" style="position:fixed;bottom:20px;right:20px;z-index:2" onclick="document.getElementById('add_popup').style.display = 'block';document.getElementById('__popup').style.display = 'block';document.getElementsByTagName('form')[0].reset();document.getElementById('name').focus()">
     <i class="large material-icons">add</i>
 </a>
@@ -143,3 +157,4 @@ $('.datepicker').datepicker({
     format: 'mm/dd/yyyy'
 });
 </script>
+<?php } ?>

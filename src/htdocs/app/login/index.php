@@ -16,14 +16,14 @@ if(isset($_POST['submit'])) {
             $users = $dbh1->query($sql1);
             foreach ($users as $row){
                 $_SESSION['valid'] = '__VALID__';
-                $_SESSION['email'] = $row['email'];
-                $_SESSION['id'] = $row['id'];
+                $_SESSION['email'] = htmlspecialchars($row['email']);
+                $_SESSION['id'] = htmlspecialchars($row['id']);
                 $t = $row['profile_picture'];
                 if(!isset($t) || empty($t)) {
                     $_SESSION['avatar'] = 'https://icon-library.com/images/google-user-icon/google-user-icon-21.jpg';
                 }
-                else {$_SESSION['avatar'] = $row['profile_picture'];}
-                $_SESSION['username'] = $row['username'];
+                else {$_SESSION['avatar'] = htmlspecialchars($row['profile_picture']);}
+                $_SESSION['username'] = htmlspecialchars($row['username']);
             }
             header('Location: ../');
             exit();
@@ -41,6 +41,7 @@ if(isset($_POST['submit'])) {
     <head>
         <title>Login</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css">
         <style>
         :root {--bg-color: white;--font-color:black} 
@@ -48,6 +49,11 @@ if(isset($_POST['submit'])) {
         input,label {color:var(--font-color) !important}
         body {background: var(--bg-color);color: var(--font-color);position: fixed;top: 50%;left: 50%;transform: scale(1) translate(-50%, -50%);width: 100%}
         @keyframes login {0% {transform: scale(.9);opacity:0;}}
+        @media only screen and (max-width: 400px) {
+            .container {
+                width: 95% !important
+            }
+        }
         </style>
     </head>
     <body>

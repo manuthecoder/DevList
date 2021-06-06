@@ -19,6 +19,8 @@ if(!isset($_SESSION['valid'])) {
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="https://i.ibb.co/gRCzWCN/Instagram-verifed.png">
     <style>
+      ::-webkit-scrollbar {display: none}
+       * { -webkit-touch-callout:none; -webkit-text-size-adjust:none;  -webkit-tap-highlight-color:rgba(0,0,0,0);  }
       .waves-light .waves-ripple {background: rgba(255,255,255,.2) !important;}
       .card-title {width: 100%;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
       .fc-event{ cursor: pointer; padding:1.5px;margin-bottom: 4px;}
@@ -57,8 +59,8 @@ if(!isset($_SESSION['valid'])) {
           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAABlBMVEUwMDD////wqdhXAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAACklEQVQImWNgAAAAAgAB9HFkpgAAAABJRU5ErkJgggo=" width="100%">
         </div>
         <a href="#user"><img class="circle" src="<?php echo $_SESSION['avatar'];?>"></a>
-        <a href="#name"><span class="white-text name"><?php echo $_SESSION['username']; ?></span></a>
-        <a href="#email"><span class="white-text email"><?php echo $_SESSION['email']; ?></span></a>
+        <a href="#name"><span class="white-text name"><?php echo htmlspecialchars($_SESSION['username']); ?></span></a>
+        <a href="#email"><span class="white-text email"><?php echo htmlspecialchars($_SESSION['email']); ?></span></a>
         </div></li>
       <li><a href="#/dashboard" class="waves-effect" onclick="AJAX_LOAD('home.php')"><i class="material-icons">home</i>Home</a></li>
       <li><div class="divider"></div></li>

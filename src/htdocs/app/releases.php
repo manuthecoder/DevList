@@ -2,6 +2,19 @@
 session_start();
 include('cred.php');
 ?>
+<?php
+$perms = 'Admin';
+    try {
+    $dbh = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $sql = "SELECT * FROM accounts_owned WHERE project_id=" . $_GET['id']. " AND login='".$_SESSION['id']."' ORDER by id DESC";
+    $users = $dbh->query($sql);
+    foreach($users as $row) {
+        $perms = $row['permissions'];
+    }
+    $dbh = null;
+    }
+    catch(PDOexception $e) { echo "Error is: " . $e->etmessage(); }
+?>
 <div class="container" id="release_loader">
 <?php
     try {
@@ -22,9 +35,11 @@ include('cred.php');
                     <div class="chip">Release ID: '.$row['id'].'</div>
                 </div>
             </div>
+            '. ($perms !== "View Only" ? '
              <div class="card-action">
                 <a href="#!" onclick="$(\'#__AJAX_LOADER\').load(\'delete-release.php?id='.$row['id'].'\');this.parentElement.parentElement.style.display=\'none\'"><i class="material-icons">delete</i></a>
             </div>
+            ': ""). '
         </div>';
     }
     }
@@ -38,7 +53,8 @@ include('cred.php');
 </div>
 
 
-
+<?php if($perms !== "View Only") {
+    ?>
 
 <a class="btn-floating btn-large blue-grey darken-3" style="position:fixed;bottom:20px;right:20px;z-index:2" onclick="document.getElementById('release_popup_bg').style.display = 'block';document.getElementById('release_popup').style.display = 'block';document.getElementById('release_name').focus()">
     <i class="large material-icons">add</i>
@@ -104,3 +120,4 @@ $("#release_form").submit(function(e) {
     });
 });
 </script>
+<?php } ?>

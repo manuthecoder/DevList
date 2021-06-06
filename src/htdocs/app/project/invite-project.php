@@ -13,7 +13,7 @@ session_start();
                 <option value="" disabled selected>Permissions</option>
                 <option value="Admin">Admin</option>
                 <option value="View Only">View Only</option>
-                <option value="Write Only">Write Only</option>
+                <!--<option value="Write Only">Write Only</option>-->
             </select>
             <br>
             <br>

@@ -8,6 +8,7 @@ try {
   $sql = "SELECT * FROM invites WHERE code=" . json_encode($_GET['id']);
   $users = $dbh->query($sql);
   $row_count = $users->rowCount();
+  
   if($row_count !== 0) {
     foreach ($users as $row) { 
       $dbh1 = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -24,6 +25,7 @@ try {
     <title>Join Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/css/materialize.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
   <body style="background: #f5f5f5">
     <div class="container">
@@ -33,11 +35,12 @@ try {
             <b><h3>Join project</h4></b>
             <p>You have been granted <?php echo  $row['permissions']; ?> access to <?php echo $row1['name'];?> via Devlist. </p>
             <p><i><?php echo $row1['description']; ?></i></p>
-            <button class="btn blue-grey darken-3">Join</button>
+            <button class="btn blue-grey darken-3" onclick="$('#div1').load('../../join.php?id=<?php echo $row['project']; ?>&p=<?php echo $row['permissions']; ?>&icon=<?php echo urlencode($row1['icon']);?>&name=<?php echo urlencode($row1['name']);?>')">Join</button>
           </div>
         </div>
       </div>
     </div>
+    <div id="div1"></div>
     <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.1.0-alpha/dist/js/materialize.min.js"></script>
   </body>
 </html>

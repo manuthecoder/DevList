@@ -1,7 +1,7 @@
 <?php 
 session_start();
 include('../cred.php');
-$hash = hash('crc32b', rand(0, 10000));
+$hash = hash('ripemd128', rand(0, 10000000000));
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);

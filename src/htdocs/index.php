@@ -19,6 +19,7 @@ if(isset($_POST['submit'])) {
 <html>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css">
     <title>
       Devlist - The free developer todo list app!
@@ -27,6 +28,11 @@ if(isset($_POST['submit'])) {
       body {background: #fff;margin:0;}
       .card {height: 200px}
       .waves-ripple {transition-duration: .5s !important}
+      @media only screen and (max-width: 600px) {
+          .m_100 {
+              width: 100% !important;
+          }
+      }
     </style>
   </head>
   <body>
@@ -39,12 +45,12 @@ if(isset($_POST['submit'])) {
       </ul>
     </nav>
     <div class="header" style="background: url(https://wallpapercave.com/wp/wp3988363.png);background-size:cover;color:white;padding: 40px 30px">
-      <div class="row container">
-        <div class="col s6">
+      <div class="row container m_100">
+        <div class="col s12 m6">
           <h1>Devlist</h1>
           <p>Devlist is a website where you can keep track of your coding projects! Become more productive by using our kanban todo list and our bug tracker!</p>
         </div>
-        <div class="col s6">
+        <div class="col s12 m6">
           <div style="background:white;padding: 10px;text-align:center;border-radius:5px;">
             <form method="POST">
               <h5 style="color:black">Join now!</h5>
@@ -69,28 +75,28 @@ if(isset($_POST['submit'])) {
     <div class="container">
       <h4 class="center">Features</h4>
       <div class="row">
-        <div class="col s4">
+        <div class="col s12 m4">
           <div class="card center">
             <div class="card-content">
-              <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><br>
+              <svg xmlns="https://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><br>
               <span class="card-title">To-do list</span>
               <p>We have a built-in todo list that lets you keep track of your progress!</p>
             </div>
           </div>
         </div>
-        <div class="col s4">
+        <div class="col s12 m4">
           <div class="card center">
             <div class="card-content">
-              <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-code"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><br>
+              <svg xmlns="https://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-code"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><br>
               <span class="card-title">Projects</span>
               <p>You can create multiple projects!</p>
             </div>
           </div>
         </div>
-        <div class="col s4">
+        <div class="col s12 m4">
           <div class="card center">
             <div class="card-content">
-              <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-terminal"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg><br>
+              <svg xmlns="https://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-terminal"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg><br>
               <span class="card-title">Bug tracker</span>
               <p>Keep track of your bugs, and fix them!</p>
             </div>
